@@ -59,7 +59,7 @@ resource gpt_4o_realtime_preview 'Microsoft.CognitiveServices/accounts/deploymen
   }
   sku: {
     name: 'GlobalStandard'
-    capacity: 5
+    capacity: 1
   }
   parent: openai
   dependsOn: [

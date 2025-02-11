@@ -36,8 +36,7 @@ public class ConversationManager(
         {
             Instructions = prompt,
             Voice = ConversationVoice.Shimmer,
-            InputTranscriptionOptions = new() { Model = "whisper-1" },
-            //ContentModalities = ConversationContentModalities.Audio,
+            InputTranscriptionOptions = new() { Model = "whisper-1" }
         };
 
         foreach (var tool in tools)

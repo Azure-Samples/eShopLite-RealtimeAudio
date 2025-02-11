@@ -38,7 +38,7 @@ if (builder.ExecutionContext.IsPublishMode)
         "gpt-4o-realtime-preview",
         "2024-12-17",
         "GlobalStandard",
-        5))
+        1))
         .AddDeployment(new AzureOpenAIDeployment(embeddingsDeploymentName,
         "text-embedding-ada-002",
         "2"));
@@ -46,13 +46,13 @@ if (builder.ExecutionContext.IsPublishMode)
     products.WithReference(appInsights)
         .WithReference(aoai)
         .WithEnvironment("AI_ChatDeploymentName", chatDeploymentName)
-        .WithEnvironment("AI_RealtimeDeploymentName", chatDeploymentName)
+        .WithEnvironment("AI_RealtimeDeploymentName", reatimeDeploymentName)
         .WithEnvironment("AI_embeddingsDeploymentName", embeddingsDeploymentName);
 
     storeRealtime.WithReference(appInsights)
         .WithReference(aoai)
         .WithEnvironment("AI_ChatDeploymentName", chatDeploymentName)
-        .WithEnvironment("AI_RealtimeDeploymentName", chatDeploymentName)
+        .WithEnvironment("AI_RealtimeDeploymentName", reatimeDeploymentName)
         .WithEnvironment("AI_embeddingsDeploymentName", embeddingsDeploymentName);
 
     store.WithReference(appInsights)

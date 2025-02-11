@@ -35,7 +35,7 @@ properties:
           - name: AI_ChatDeploymentName
             value: gpt-4o-mini
           - name: AI_RealtimeDeploymentName
-            value: gpt-4o-mini
+            value: gpt-4o-realtime-preview
           - name: AI_embeddingsDeploymentName
             value: text-embedding-ada-002
           - name: ASPNETCORE_FORWARDEDHEADERS_ENABLED
