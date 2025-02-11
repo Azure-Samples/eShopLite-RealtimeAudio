@@ -5,6 +5,8 @@ using Azure.AI.OpenAI;
 using System.ClientModel;
 using OpenAI.RealtimeConversation;
 using Azure;
+using System.Text.RegularExpressions;
+using System.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +19,10 @@ builder.Services.AddHttpClient<ProductService>(
 
 var azureOpenAiClientName = "openai";
 string? aoaiCnnString = builder.Configuration.GetConnectionString("openai");
-var aoaiEndpoint = aoaiCnnString?.Split("Endpoint=")[1].Split("/openai/")[0];
+//var aoaiEndpoint = aoaiCnnString?.Split("Endpoint=")[1].Split("/openai/")[0];
+var aoaiEndpoint = aoaiCnnString != null ?
+    Regex.Match(aoaiCnnString, @"Endpoint=(https://[^\s;]+)").Groups[1].Value : null;
+
 builder.AddAzureOpenAIClient(azureOpenAiClientName,
     settings =>
     {
@@ -92,3 +97,11 @@ Azure OpenAI Endpoint: {aoaiEndpoint}
 ========================================");
 
 app.Run();
+
+
+static (string endpoint, string apiKey) GetEndpointAndKey(WebApplicationBuilder builder, string name)
+{
+    var connectionString = builder.Configuration.GetConnectionString(name);
+    var parameters = HttpUtility.ParseQueryString(connectionString.Replace(";", "&"));
+    return (parameters["Endpoint"], parameters["Key"]);
+}
