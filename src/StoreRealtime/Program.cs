@@ -85,7 +85,10 @@ app.MapRazorComponents<App>()
     .AddInteractiveServerRenderMode();
 
 // log values for the AOAI services
-app.Logger.LogInformation($"Azure OpenAI Connection String: {aoaiCnnString}");
-app.Logger.LogInformation($"Azure OpenAI Endpoint: {aoaiEndpoint}");
+app.Logger.LogInformation($@"========================================
+Azure OpenAI information
+Azure OpenAI Connection String: {aoaiCnnString}
+Azure OpenAI Endpoint: {aoaiEndpoint}
+========================================");
 
 app.Run();

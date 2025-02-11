@@ -34,12 +34,12 @@
         {
             try
             {
-                Console.WriteLine($"Received {data.Length} bytes of audio data");
+                //Console.WriteLine($"Received {data.Length} bytes of audio data");
                 await micPipe.Writer.WriteAsync(data);
             }
             finally
             {
-                Console.WriteLine("Releasing semaphore");
+                // Console.WriteLine("Releasing semaphore");
                 writeAudioSemaphore.Release();
             }
         }
