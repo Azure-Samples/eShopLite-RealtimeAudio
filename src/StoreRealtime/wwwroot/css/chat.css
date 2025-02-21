@@ -252,7 +252,7 @@
 }
 
 .btn-purple {
-    background-color: #512bd4; /* .NET purple */
+    background-color: #6200EE; /* Different .NET purple */
     color: white;
     border: none;
     padding: 10px 20px;
@@ -261,7 +261,7 @@
 }
 
     .btn-purple:hover {
-        background-color: #3e1a9e; /* Darker .NET purple */
+        background-color: #3700B3; /* Darker .NET purple */
     }
 
 .icon-top-right {
@@ -270,3 +270,18 @@
     right: 10px;
     font-size: 24px;
 }
+
+/* Update the button color to differentiate it from the assistant and user bubbles */
+.btn-net {
+    background-color: #0078D4; /* .NET blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.btn-net:hover {
+    background-color: #005A9E; /* Darker .NET blue */
+}
+
