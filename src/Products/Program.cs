@@ -107,6 +107,11 @@ using (var scope = app.Services.CreateScope())
         app.Logger.LogError(exc, "Error creating database");
     }
     DbInitializer.Initialize(context);
+
+    app.Logger.LogInformation("Start fill products in vector db");
+    var memoryContext = app.Services.GetRequiredService<MemoryContext>();
+    await memoryContext.InitMemoryContextAsync(context);
+    app.Logger.LogInformation("Done fill products in vector db");
 }
 
 app.Run();

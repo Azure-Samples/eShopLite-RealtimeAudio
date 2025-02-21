@@ -13,8 +13,11 @@
 
 <PageTitle>eShopLite - Realtime chat support</PageTitle>
 
-@* AUDIO DEVICES *@
-<Microphone OnMicAvailable="@OnMicAvailable" />
+@if (isMicActive)
+{
+    <Microphone OnMicAvailable="@OnMicAvailable" />
+}
+
 <Speaker @ref="@speaker" />
 
 <div class="net-brand-page">
@@ -38,11 +41,16 @@
                     </div>
                 }
             </div>
+            <button id="ButtonChatStartStop" class="btn btn-purple" @onclick="ToggleMic">
+                @(isMicActive ? "Stop Live Chat" : "Start Live Chat")
+            </button>
         </div>
 
         @* REALTIME AUDIO LOG SECTION *@
         <div class="info-log-section">
+
             <h4>Realtime Audio Log</h4>
+            <i class="icon-top-right">🔊</i>
             <ul class="info-log">
                 @foreach (var message in messages)
                 {
@@ -55,17 +63,34 @@
 
 @code {
     private ConversationManager? conversationManager;
-    private readonly CancellationTokenSource disposalCts = new();
+    private CancellationTokenSource disposalCts = new();
+    private bool isMicActive = false;
     private Speaker? speaker;
     private readonly List<LogMessage> messages = new();
     private readonly List<RealtimeChatMessage> chatMessages = new();
     private ElementReference mainContentSection;
 
+    private void ToggleMic()
+    {
+        if (isMicActive)
+        {
+            // Stop interaction
+            conversationManager?.Dispose();
+            isMicActive = false;
+        }
+        else
+        {
+            // Start interaction
+            disposalCts = new CancellationTokenSource();
+            isMicActive = true;
+        }
+    }
+
     private void OnMicAvailable(PipeReader micReader)
     {
         conversationManager = new(RealtimeConversationClient, contosoProductContext, logger);
         _ = RunAsBackgroundTask(() => conversationManager.RunAsync(micReader.AsStream(), speaker!,
-        AddMessageAsync, AddChatMessageAsync, disposalCts.Token));
+            AddMessageAsync, AddChatMessageAsync, disposalCts.Token));
     }
 
     public void Dispose()
@@ -77,10 +102,11 @@
     private async Task AddChatMessageAsync(string message, bool isUserMessage)
     {
         var cm = new RealtimeChatMessage
-            {
-                Message = message,
-                IsUser = isUserMessage
-            };
+        {
+            Message = message,
+            IsUser = isUserMessage,
+            Timestamp = DateTime.Now
+        };
         chatMessages.Add(cm);
         await InvokeAsync(StateHasChanged);
         ScrollToBottom(mainContentSection);
