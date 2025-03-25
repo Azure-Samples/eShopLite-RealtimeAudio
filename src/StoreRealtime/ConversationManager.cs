@@ -1,9 +1,12 @@
-﻿using System.Text;
+﻿using DataEntities;
 using Microsoft.Extensions.AI;
 using OpenAI.RealtimeConversation;
+using SearchEntities;
 using StoreRealtime.Components;
 using StoreRealtime.ContextManagers;
 using StoreRealtime.Support;
+using System.Text;
+using System.Text.Json;
 
 namespace StoreRealtime;
 
@@ -16,7 +19,11 @@ public class ConversationManager(
 
     ContosoProductContext _contosoProductContext = contosoProductContext;
 
-    public async Task RunAsync(Stream audioInput, Speaker audioOutput, Func<string, Task> addMessageAsync, Func<string, bool, Task> addChatMessageAsync, CancellationToken cancellationToken)
+    public async Task RunAsync(Stream audioInput, Speaker audioOutput, 
+        Func<string, Task> addMessageAsync, 
+        Func<string, bool, Task> addChatMessageAsync,
+        Func<List<Product>, Task> addChatProductMessageAsync,
+        CancellationToken cancellationToken)
     {
         var prompt = $"""
             You are a useful assistant.
@@ -29,8 +36,10 @@ public class ConversationManager(
         await addMessageAsync("Connecting...");
         await addChatMessageAsync("Hello, how can I help?", false);
 
-        var contosoSemanticSearchTool = AIFunctionFactory.Create(_contosoProductContext.SemanticSearchOutdoorProductsAsync);
-        var contosoSearchByProductNameTool = AIFunctionFactory.Create(_contosoProductContext.SearchOutdoorProductsByNameAsync);
+        var contosoSemanticSearchTool = 
+            AIFunctionFactory.Create(_contosoProductContext.SemanticSearchOutdoorProductsAsync);
+        var contosoSearchByProductNameTool = 
+            AIFunctionFactory.Create(_contosoProductContext.SearchOutdoorProductsByNameAsync);
 
         List<AIFunction> tools = [contosoSemanticSearchTool, contosoSearchByProductNameTool];
 
@@ -89,11 +98,28 @@ public class ConversationManager(
                 case ConversationItemStreamingFinishedUpdate itemFinished:
                     if (!string.IsNullOrEmpty(itemFinished.FunctionName))
                     {
+
                         await addMessageAsync($"Calling function: {itemFinished.FunctionName}({itemFinished.FunctionCallArguments})");
                         if (await itemFinished.GetFunctionCallOutputAsync(tools) is { } output)
                         {
                             await addMessageAsync($"Call function finished: {output.ToString()}");
                             await session.AddItemAsync(output);
+
+                            // Use reflection to access the hidden "Output" property
+                            var outputProperty = output.GetType().GetProperty("Output",
+                                System.Reflection.BindingFlags.Public |
+                                System.Reflection.BindingFlags.NonPublic |
+                                System.Reflection.BindingFlags.Instance);
+
+                            if (outputProperty != null)
+                            {
+                                var outputValue = outputProperty.GetValue(output);
+                                if (outputValue != null)
+                                {
+                                    SearchResponse response = JsonSerializer.Deserialize<SearchResponse>(outputValue.ToString());
+                                    addChatProductMessageAsync(response.Products);
+                                }
+                            }
                         }
                     }
                     break;

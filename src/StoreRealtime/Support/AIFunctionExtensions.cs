@@ -40,7 +40,8 @@ public static class AIFunctionExtensions
             {
                 jsonArgs = JsonSerializer.Deserialize<Dictionary<string, object?>>(update.FunctionCallArguments)!;
                 var output = await aiFunction.InvokeAsync(jsonArgs);
-                return ConversationItem.CreateFunctionCallOutput(update.FunctionCallId, output?.ToString() ?? "");
+                var ci = ConversationItem.CreateFunctionCallOutput(update.FunctionCallId, output?.ToString() ?? "");
+                return ci;
             }
             catch (JsonException)
             {

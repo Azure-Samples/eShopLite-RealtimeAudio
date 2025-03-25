@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using DataEntities
 @using OpenAI.Chat
 @using OpenAI.RealtimeConversation
 @using System.IO.Pipelines
@@ -36,6 +37,16 @@
                         <div class="sender-name">@senderName</div>
                         <div class="message-content">
                             <div class="@messageUserStyle">@chatMessage.Message</div>
+
+                            @if (chatMessage.Product != null)
+                            {
+                                <div class="product-info">
+                                    <h5>@chatMessage.Product.Name</h5>
+                                    <div class="product-description">@chatMessage.Product.Description</div>
+                                    <div class="product-price">@chatMessage.Product.Price.ToString("C")</div>
+                                    <img height="80" width="80" src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@chatMessage.Product.ImageUrl" />
+                                </div>
+                            }
                             <div class="message-time">@chatMessage.Timestamp.ToString("G")</div>
                         </div>
                     </div>
@@ -90,7 +101,11 @@
     {
         conversationManager = new(RealtimeConversationClient, contosoProductContext, logger);
         _ = RunAsBackgroundTask(() => conversationManager.RunAsync(micReader.AsStream(), speaker!,
-            AddMessageAsync, AddChatMessageAsync, disposalCts.Token));
+
+        AddMessageAsync,
+        AddChatMessageAsync,
+        AddChatProductMessageAsync,
+        disposalCts.Token));
     }
 
     public void Dispose()
@@ -109,6 +124,22 @@
         };
         chatMessages.Add(cm);
         await InvokeAsync(StateHasChanged);
+        ScrollToBottom(mainContentSection);
+    }
+
+    private async Task AddChatProductMessageAsync(List<Product> products)
+    {
+        foreach (var product in products)
+        {
+            var productMessage = new RealtimeChatMessage
+            {
+                IsUser = false,
+                Product = product,
+                Timestamp = DateTime.Now
+            };
+            chatMessages.Add(productMessage);
+            await InvokeAsync(StateHasChanged);
+        }
         ScrollToBottom(mainContentSection);
     }
 
