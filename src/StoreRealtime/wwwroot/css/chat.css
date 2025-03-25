@@ -230,7 +230,7 @@
 }
 
 .info-log-section {
-    flex: 1;
+    flex: 2;
     overflow-y: auto;
     font-size: 0.8em; /* Smaller font size */
     background-color: #E1E1E1; /* Light gray */
