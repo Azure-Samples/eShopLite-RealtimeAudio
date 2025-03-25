@@ -129,6 +129,12 @@ public class ConversationManager(
                     // If we added one or more function call results, instruct the model to respond to them
                     if (responseFinished.CreatedItems.Any(item => !string.IsNullOrEmpty(item.FunctionName)))
                     {
+                        StringBuilder tokens = new();
+                        tokens.AppendLine($"Total Tokens: {responseFinished.Usage.TotalTokens}");
+                        tokens.AppendLine($"Input Tokens: {responseFinished.Usage.InputTokens}");
+                        tokens.AppendLine($"Output Tokens: {responseFinished.Usage.OutputTokens}");
+                        await addMessageAsync($"{tokens.ToString()}");
+
                         await session.StartResponseAsync();
                     }
                     break;
