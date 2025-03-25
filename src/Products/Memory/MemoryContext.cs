@@ -77,6 +77,7 @@ public class MemoryContext
             catch (Exception exc)
             {
                 _logger.LogError(exc, $"Error adding product {product.Name} to memory");
+                _isMemoryCollectionInitialized = false;
                 return false;
             }
         }
@@ -102,10 +103,9 @@ public class MemoryContext
             var result = await _embeddingClient!.GenerateEmbeddingAsync(search);
             var vectorSearchQuery = result.Value.ToFloats();
 
-            var searchOptions = new VectorSearchOptions
+            var searchOptions = new VectorSearchOptions<ProductVector>
             {
-                Top = 2,
-                VectorPropertyName = "Vector"
+                Top = 2
             };
 
             // search the vector database for the most similar product        
