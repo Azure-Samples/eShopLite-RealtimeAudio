@@ -38,24 +38,26 @@
                         <div class="message-content">
                             <div class="@messageUserStyle">@chatMessage.Message</div>
 
-                            @if (chatMessage.Product != null)
+                            @if (chatMessage.Products != null)
                             {
-                                <!-- Replace the existing product-info div with this enhanced product card -->
-                                <div class="product-card">
-                                    <div class="product-card-header">
-                                        <h5 class="product-name">@chatMessage.Product.Name</h5>
-                                        <div class="product-price">@chatMessage.Product.Price.ToString("C")</div>
-                                    </div>
-                                    <div class="product-card-body">
-                                        <div class="product-image">
-                                            <img src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@chatMessage.Product.ImageUrl" alt="@chatMessage.Product.Name" />
+                                foreach (var product in chatMessage.Products)
+                                {
+                                    <div class="product-card">
+                                        <div class="product-card-header">
+                                            <h5 class="product-name">@product.Name</h5>
+                                            <div class="product-price">@product.Price.ToString("C")</div>
                                         </div>
-                                        <div class="product-details">
-                                            <div class="product-description">@chatMessage.Product.Description</div>
-                                            <button class="btn-product">View Details</button>
+                                        <div class="product-card-body">
+                                            <div class="product-image">
+                                                <img src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@product.ImageUrl" alt="@product.Name" />
+                                            </div>
+                                            <div class="product-details">
+                                                <div class="product-description">@product.Description</div>
+                                                <button class="btn-product">View Details</button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                }
                             }
                             <div class="message-time">@chatMessage.Timestamp.ToString("G")</div>
                         </div>
@@ -139,17 +141,14 @@
 
     private async Task AddChatProductMessageAsync(List<Product> products)
     {
-        foreach (var product in products)
+        var productMessage = new RealtimeChatMessage
         {
-            var productMessage = new RealtimeChatMessage
-            {
-                IsUser = false,
-                Product = product,
-                Timestamp = DateTime.Now
-            };
-            chatMessages.Add(productMessage);
-            await InvokeAsync(StateHasChanged);
-        }
+            IsUser = false,
+            Products = products,
+            Timestamp = DateTime.Now
+        };
+        chatMessages.Add(productMessage);
+        await InvokeAsync(StateHasChanged);
         ScrollToBottom(mainContentSection);
     }
 
