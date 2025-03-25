@@ -75,7 +75,8 @@ public class ConversationManager(
                     break;
 
                 case ConversationInputTranscriptionFinishedUpdate:
-                    var transcript = update as ConversationInputTranscriptionFinishedUpdate; 
+                    var transcript = update as ConversationInputTranscriptionFinishedUpdate;
+                    await addMessageAsync($"User: {transcript.Transcript}");
                     await addChatMessageAsync(transcript.Transcript, true);
                     break;
 
@@ -117,7 +118,7 @@ public class ConversationManager(
                                 if (outputValue != null)
                                 {
                                     SearchResponse response = JsonSerializer.Deserialize<SearchResponse>(outputValue.ToString());
-                                    addChatProductMessageAsync(response.Products);
+                                    await addChatProductMessageAsync(response.Products);
                                 }
                             }
                         }

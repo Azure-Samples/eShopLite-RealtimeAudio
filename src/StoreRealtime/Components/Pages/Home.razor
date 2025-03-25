@@ -40,11 +40,21 @@
 
                             @if (chatMessage.Product != null)
                             {
-                                <div class="product-info">
-                                    <h5>@chatMessage.Product.Name</h5>
-                                    <div class="product-description">@chatMessage.Product.Description</div>
-                                    <div class="product-price">@chatMessage.Product.Price.ToString("C")</div>
-                                    <img height="80" width="80" src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@chatMessage.Product.ImageUrl" />
+                                <!-- Replace the existing product-info div with this enhanced product card -->
+                                <div class="product-card">
+                                    <div class="product-card-header">
+                                        <h5 class="product-name">@chatMessage.Product.Name</h5>
+                                        <div class="product-price">@chatMessage.Product.Price.ToString("C")</div>
+                                    </div>
+                                    <div class="product-card-body">
+                                        <div class="product-image">
+                                            <img src="https://raw.githubusercontent.com/MicrosoftDocs/mslearn-dotnet-cloudnative/main/dotnet-docker/Products/wwwroot/images/@chatMessage.Product.ImageUrl" alt="@chatMessage.Product.Name" />
+                                        </div>
+                                        <div class="product-details">
+                                            <div class="product-description">@chatMessage.Product.Description</div>
+                                            <button class="btn-product">View Details</button>
+                                        </div>
+                                    </div>
                                 </div>
                             }
                             <div class="message-time">@chatMessage.Timestamp.ToString("G")</div>
