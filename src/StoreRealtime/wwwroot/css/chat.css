@@ -285,3 +285,107 @@
     background-color: #005A9E; /* Darker .NET blue */
 }
 
+/* Add these new product card styles to the end of your chat.css file */
+
+.product-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 15px 0;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #e0e0e0;
+    width: 100%;
+    max-width: 500px;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.product-card-header {
+    background-color: #512BD4;
+    color: white;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.product-name {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: 600;
+    color: white;
+}
+
+.product-price {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: white;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.product-card-body {
+    padding: 15px;
+    display: flex;
+    gap: 15px;
+}
+
+.product-image {
+    flex: 0 0 120px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.product-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.product-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-description {
+    color: #333333;
+    font-size: 0.9em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    overflow-wrap: break-word;
+}
+
+.btn-product {
+    background-color: #0078D4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    font-weight: 600;
+    align-self: flex-start;
+    transition: background-color 0.2s ease;
+}
+
+.btn-product:hover {
+    background-color: #005A9E;
+}
+
+/* Ensure the product card works well within message bubbles */
+.message-assistant .product-card {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+

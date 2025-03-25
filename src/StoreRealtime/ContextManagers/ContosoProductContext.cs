@@ -1,5 +1,6 @@
 ﻿using StoreRealtime.Services;
 using System.ComponentModel;
+using System.Text.Json;
 
 namespace StoreRealtime.ContextManagers;
 
@@ -9,7 +10,8 @@ public class ContosoProductContext(ProductService productService)
     public async Task<string> SemanticSearchOutdoorProductsAsync(string searchCriteria)
     {
         var response = await productService.Search(searchCriteria, true);
-        return response.Response!;
+        // return the response in json format
+        return JsonSerializer.Serialize(response);
     }
 
     [Description("Search outdoor products in the Contoso database based on a search criteria searching byt the product name. The response will include the product name, description and price.")]
