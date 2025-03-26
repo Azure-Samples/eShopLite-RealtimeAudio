@@ -4,7 +4,9 @@
 
 ## Description
 
-**eShopLite - Realtime Audio Chat** is a reference .NET application implementing an eCommerce site with advanced search features and real-time audio capabilities. The solution combines keyword search, semantic search, and a new chat interface using audio powered by the **GPT-4o Realtime Audio API**. The reference application is part of the **[Generative AI for Beginners .NET](https://aka.ms/genainnet)** series, which aims to provide practical examples and resources for developers interested in generative AI.
+**eShopLite - Realtime Audio Chat** is a reference .NET application implementing an eCommerce site with advanced search features and real-time audio capabilities. The solution combines keyword search, semantic search, and a new chat interface using audio powered by the **GPT-4o Realtime Audio API**. 
+
+The reference application is part of the **[Generative AI for Beginners .NET](https://aka.ms/genainnet)** series, which aims to provide practical examples and resources for developers interested in generative AI.
 
 - [Features](#features)
 - [Architecture diagram](#architecture-diagram)
