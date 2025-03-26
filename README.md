@@ -4,7 +4,7 @@
 
 ## Description
 
-**eShopLite - Realtime Audio Chat** is a reference .NET application implementing an eCommerce site with advanced search features and real-time audio capabilities. The solution combines keyword search, semantic search, and a new chat interface using audio powered by the **GPT-4o Realtime Audio API**.
+**eShopLite - Realtime Audio Chat** is a reference .NET application implementing an eCommerce site with advanced search features and real-time audio capabilities. The solution combines keyword search, semantic search, and a new chat interface using audio powered by the **GPT-4o Realtime Audio API**. The reference application is part of the **[Generative AI for Beginners .NET](https://aka.ms/genainnet)** series, which aims to provide practical examples and resources for developers interested in generative AI.
 
 - [Features](#features)
 - [Architecture diagram](#architecture-diagram)
@@ -13,8 +13,7 @@
 - Run solution
   - [Run locally](#run-locally)
   - [Run the solution](#run-the-solution)
-  - [.NET Aspire Azure Resources creation](#net-aspire-azure-resources-creation)
-  - [Local dev using an existing model](#local-development-using-an-existing-gpt-4o-model)
+  - [Local development using existing models](#local-development-using-an-existing-model)
   - [Telemetry with .NET Aspire and Azure Application Insights](#telemetry-with-net-aspire-and-azure-application-insights)
 - [Resources](#resources)
 - [Video Recordings](#video-recordings)
@@ -22,6 +21,8 @@
   - [Costs](#costs)
   - [Security Guidelines](#security-guidelines)
 - [Resources](#resources)
+
+[![overall explainer video](./images/90GenAiNetVideo.png)](https://aka.ms/genainnet/videos/lesson4-overview)
 
 ## Features
 
@@ -75,7 +76,7 @@ From a Terminal window, open the folder with the clone of this repo and run the 
     azd up
     ```
 
-    It will prompt you to provide an `azd` environment name (like "eShopLite"), select a subscription from your Azure account, and select a [location where OpenAI the models gpt-4o-mini, gpt-4o-realtime and ADA-002 are available](https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) (like "eastus2").
+    It will prompt you to provide an `azd` environment name (like "eShopLite"), select a subscription from your Azure account, and select a [location where OpenAI the models gpt-4o-mini, gpt-4o-realtime and ADA-002 are available](https://azure.microsoft.com/explore/global-infrastructure/products-by-region/?products=cognitive-services&regions=all) (like **"eastus2"** or **"swedencentral"**).
 
 1. When `azd` has finished deploying, you'll see the list of resources created in Azure and a set of URIs in the command output.
 
@@ -121,13 +122,7 @@ Follow these steps to run the project, locally or in CodeSpaces:
   cd ./src/eShopAppHost/
   ```
 
-- If you are running the project in Codespaces, you need to run this command:
-
-  ```bash
-  dotnet dev-certs https --trust
-  ```
-
-- By default the AppHost project creates the necessary resources on Azure. Check the **[.NET Aspire Azure Resources creation](#net-aspire-azure-resources-creation)** section to learn how to configure the project to create Azure resources.
+- Set the user secrets for the Azure OpenAI connection string as explained in the [Local development using existing models](#local-development-using-an-existing-model) section.
 
 - Run the project:
 
@@ -135,47 +130,9 @@ Follow these steps to run the project, locally or in CodeSpaces:
   dotnet run
   ````
 
-Check the [Video Resources](#resources) for a step-by-step on how to run this project.
+### Local development using existing models
 
-> **Note:** Working with .NET Aspire in GitHub Codespaces is not fully supported yet. As a developer you need to perform a lot of manual steps to access the .NET Aspire portal, like changing ports to public, copy the access token and more. The .NET Aspire version 9.1 will improve the whole developer experience. We will update these steps when the version 9.1 is released.
-
-## .NET Aspire Azure Resources creation
-
-When utilizing Azure resources in your local development environment, you need to:
-
-- Authenticate to the Azure Tenant where the resources will be created. Run the following command to connect with your Azure tenant:
-
-  ```bash
-  az login 
-  ```
-
-- Provide the necessary Configuration values are specified under the Azure section in the `eShopAppHost` project:
-
-  - CredentialSource: Delegates to the [AzureCliCredential](https://learn.microsoft.com/dotnet/api/azure.identity.azureclicredential).
-  - SubscriptionId: The Azure subscription ID.
-  - AllowResourceGroupCreation: A boolean value that indicates whether to create a new resource group.
-  - ResourceGroup: The name of the resource group to use.
-  - Location: The Azure region to use.
-
-Consider the following example for the *appsettings.json* file in the eShopAppHost project configuration:
-
-```json
-{
-  "Azure": {
-    "CredentialSource": "AzureCli",
-    "SubscriptionId": "<Your subscription id>",
-    "AllowResourceGroupCreation": true,
-    "ResourceGroup": "<Valid resource group name>",
-    "Location": "<Valid Azure location>"
-  }
-}
-```
-
-Check [.NET Aspire Azure hosting integrations](https://learn.microsoft.com/en-us/dotnet/aspire/azure/local-provisioning#net-aspire-azure-hosting-integrations) for more information on how .NET Aspire create the necessary cloud resources for local development.
-
-### Local development using an existing gpt-4o-mini and ada-002 model
-
-In order to use existing models: gpt-4o-mini and text-embedding-ada-002, you need to define the specific connection string in the `Products` and `RealtimeStore` projects.
+In order to use existing models: gpt-4o-mini, gpt-4o-realtime and text-embedding-ada-002, you need to define the specific connection string in the `Products` and `RealtimeStore` projects.
 
 Add a user secret with the configuration:
 
@@ -257,6 +214,4 @@ You may want to consider additional security measures, such as:
 
 ## Video Recordings
 
-- [Deploy eShopLite with Real-time Audio Chat](#coming-soon)
-
-*Note: Add a video showing real-time audio chat interactions once available.*
+- [eShopLite - Real-time Audio Chat Overview](https://learn.microsoft.com/en-us/shows/generative-ai-for-beginners-dotnet/practical-samples-eshoplite-with-real-time-audio)
